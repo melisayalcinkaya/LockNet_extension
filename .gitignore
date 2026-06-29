@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+.ipynb_checkpoints/
+
+# Veri ve eğitim çıktıları (eğitim sırasında indirilir/üretilir)
+data/raw/
+data/cache/
+training/runs/
+*.keras
+*.pkl
+
+# Node
+node_modules/
+dist/
+
+# Sistem
+.DS_Store
+Thumbs.db

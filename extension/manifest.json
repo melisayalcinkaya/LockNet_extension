@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "LockNet Guardian",
+  "version": "1.1",
+  "description": "AI destekli içerik denetleyici.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LockNet Guardian"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "sandbox": {
+    "pages": ["sandbox.html"]
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "sandbox.html",
+        "sandbox.js",
+        "tf.min.js",
+        "kelime_sozlugu.json",
+        "locknet_web_modeli/model.json",
+        "locknet_web_modeli/*.bin"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
