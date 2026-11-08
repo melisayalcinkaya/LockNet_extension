@@ -10,8 +10,8 @@
     1,
     2
   ],
-  "sabit": -3.12672758102417,
-  "esik": 0.34,
-  "esik_temkinli": 0.51,
+  "sabit": -2.260399580001831,
+  "esik": 0.62,
+  "esik_temkinli": 0.78,
   "agirliklar": "weights.bin: float16 idf[kutu_sayisi] + float16 katsayi[kutu_sayisi], little-endian"
 }
