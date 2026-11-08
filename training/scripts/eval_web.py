@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from locknet import metrics  # noqa: E402
 from locknet.features import HashTfidf  # noqa: E402
+from locknet.onnx_skor import OnnxBert  # noqa: E402
 from locknet.preprocess import on_isle  # noqa: E402
 
 KOK = Path(__file__).resolve().parents[2]
@@ -38,23 +39,8 @@ def taban_skor(dizin: Path, metinler):
 
 
 def bert_skor(dizin: Path, metinler):
-    import onnxruntime as ort
-    from tokenizers import Tokenizer
-
-    meta = json.loads((dizin / "meta.json").read_text())
-    tok = Tokenizer.from_file(str(dizin / "tokenizer.json"))
-    tok.enable_truncation(meta["maks_uzunluk"])
-    tok.enable_padding()
-    oturum = ort.InferenceSession(str(dizin / "model.onnx"))
-    skor = []
-    for i in range(0, len(metinler), 64):
-        k = tok.encode_batch([on_isle(t) for t in metinler[i : i + 64]])
-        ids = np.array([e.ids for e in k], dtype=np.int64)
-        maske = np.array([e.attention_mask for e in k], dtype=np.int64)
-        lg = oturum.run(None, {"input_ids": ids, "attention_mask": maske})[0]
-        e = np.exp(lg - lg.max(1, keepdims=True))
-        skor.append(e[:, 1] / e.sum(1))
-    return meta, np.concatenate(skor)
+    m = OnnxBert(dizin)
+    return m.meta, m.skorla(metinler)
 
 
 def main(yol: str) -> None:

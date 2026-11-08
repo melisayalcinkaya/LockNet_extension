@@ -159,26 +159,22 @@ def main() -> None:
 
     quantize_dynamic(str(gecici / "model_fp32.onnx"), str(gecici / "model.onnx"), weight_type=QuantType.QInt8)
 
-    # int8 modeli de ölç: tarayıcıya giden dosya bu.
-    import onnxruntime as ort
+    # int8 modeli de ölç: tarayıcıya giden dosya bu. Tek cümle, dolgusuz puanlanır
+    # (dinamik nicemlemede skor partideki diğer cümlelere bağlı; bkz. locknet/onnx_skor.py).
+    from locknet.onnx_skor import OnnxBert
 
-    oturum = ort.InferenceSession(str(gecici / "model.onnx"))
+    tok.save_pretrained(str(gecici / "tok"))
+    (gecici / "meta.json").write_text(json.dumps({"maks_uzunluk": MAKS_UZUNLUK}))
+    import shutil
 
-    def onnx_skor(metinler):
-        skor = []
-        for i in range(0, len(metinler), 64):
-            k = tok([on_isle(t) for t in metinler[i : i + 64]], truncation=True, max_length=MAKS_UZUNLUK, padding=True, return_tensors="np")
-            lg = oturum.run(None, {"input_ids": k["input_ids"].astype(np.int64), "attention_mask": k["attention_mask"].astype(np.int64)})[0]
-            e = np.exp(lg - lg.max(1, keepdims=True))
-            skor.append(e[:, 1] / e.sum(1))
-        return np.concatenate(skor)
-
-    s_dog8 = onnx_skor(list(dogrulama.metin))
+    shutil.copy(gecici / "tok" / "tokenizer.json", gecici / "tokenizer.json")
+    onnx8 = OnnxBert(gecici)
+    s_dog8 = onnx8.skorla(list(dogrulama.metin))
     esik8 = metrics.esik_sec(dogrulama.etiket, s_dog8)
     esik8_t = metrics.esik_sec(dogrulama.etiket, s_dog8, en_fazla_yanlis_alarm=0.02)
     t0 = time.perf_counter()
-    s_test8 = onnx_skor(list(test.metin))
-    sonuc["int8_ms_cumle_parti64"] = round((time.perf_counter() - t0) * 1000 / len(test), 3)
+    s_test8 = onnx8.skorla(list(test.metin))
+    sonuc["int8_ms_cumle_tekli"] = round((time.perf_counter() - t0) * 1000 / len(test), 3)
     sonuc["int8_test"] = metrics.olc(test.etiket, s_test8, esik8)
     sonuc["int8_test_temkinli_esik"] = metrics.olc(test.etiket, s_test8, esik8_t)
     boyut = (gecici / "model.onnx").stat().st_size
@@ -186,7 +182,6 @@ def main() -> None:
 
     if boyut < 95 * 2**20:
         (hedef / "model.onnx").write_bytes((gecici / "model.onnx").read_bytes())
-        tok.save_pretrained(str(gecici / "tok"))
         (hedef / "tokenizer.json").write_bytes((gecici / "tok" / "tokenizer.json").read_bytes())
         meta = {
             "tur": "bert-onnx-int8",
@@ -194,6 +189,7 @@ def main() -> None:
             "maks_uzunluk": MAKS_UZUNLUK,
             "esik": esik8,
             "esik_temkinli": esik8_t,
+            "parti": 1,
             "girdiler": ["input_ids", "attention_mask"],
             "cikti": "logits[:, 1] softmax",
         }
