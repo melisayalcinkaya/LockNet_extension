@@ -2,8 +2,10 @@
   "tur": "bert-onnx-int8",
   "hf_model": "ytu-ce-cosmos/turkish-medium-bert-uncased",
   "maks_uzunluk": 64,
-  "esik": 0.17,
-  "esik_temkinli": 0.32,
+  "esik": 0.3,
+  "esik_temkinli": 0.73,
+  "parti": 1,
+  "nicemleme": "qint8_kanal",
   "girdiler": [
     "input_ids",
     "attention_mask"
