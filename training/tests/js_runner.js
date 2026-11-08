@@ -11,7 +11,12 @@ const girdi = JSON.parse(fs.readFileSync(0, "utf8"));
 let cikti;
 if (girdi.gorev === "on_isle") cikti = girdi.metinler.map(onIsle);
 else if (girdi.gorev === "hash") cikti = girdi.metinler.map((m) => ngramlar(m).map(murmur3));
-else if (girdi.gorev === "skor") {
+else if (girdi.gorev === "wordpiece") {
+  const { tokenizerOlustur } = require(path.join(lib, "wordpiece.js"));
+  const tj = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../..", girdi.tokenizer), "utf8"));
+  const t = tokenizerOlustur(tj, girdi.maks_uzunluk);
+  cikti = girdi.metinler.map((m) => t.kodla(m));
+} else if (girdi.gorev === "skor") {
   const dizin = path.resolve(__dirname, "../..", girdi.model_dizini);
   const meta = JSON.parse(fs.readFileSync(path.join(dizin, "meta.json"), "utf8"));
   const b = fs.readFileSync(path.join(dizin, "weights.bin"));

@@ -67,3 +67,20 @@ def test_model_skoru_ayni(js):
     py = 1 / (1 + np.exp(-(X @ w[n:] + meta["sabit"])))
     js_skor = np.array(js("skor", METINLER, model_dizini="extension/model/baseline"))
     assert np.max(np.abs(js_skor - py)) < 1e-4
+
+
+BERT_DIZINLERI = sorted(p for p in (KOK / "extension" / "model").glob("bert-*") if (p / "tokenizer.json").exists())
+
+
+@pytest.mark.skipif(not BERT_DIZINLERI, reason="eklentide BERT modeli yok")
+@pytest.mark.parametrize("dizin", BERT_DIZINLERI, ids=lambda p: p.name)
+def test_wordpiece_ayni(js, dizin):
+    tokenizers = pytest.importorskip("tokenizers")
+    meta = json.loads((dizin / "meta.json").read_text())
+    tok = tokenizers.Tokenizer.from_file(str(dizin / "tokenizer.json"))
+    tok.no_padding()
+    tok.enable_truncation(meta["maks_uzunluk"])
+    islenmis = [on_isle(m) for m in METINLER] + [on_isle("çok " * 80)]
+    py = [e.ids for e in tok.encode_batch(islenmis)]
+    rel = str(dizin.relative_to(KOK) / "tokenizer.json")
+    assert js("wordpiece", islenmis, tokenizer=rel, maks_uzunluk=meta["maks_uzunluk"]) == py
