@@ -35,5 +35,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add results extension/model
-          git diff --cached --quiet || git commit -m "chore: training results for ${{ inputs.betik }}"
-          git push
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: training results for ${{ inputs.betik }}"
+          # Eğitim sürerken dala başka commit gelmiş olabilir.
+          for i in 1 2 3; do git pull --rebase && git push && exit 0; sleep 5; done
+          exit 1
