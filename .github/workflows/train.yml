@@ -7,6 +7,10 @@ on:
         description: "training/scripts altındaki betik (ör. train_baseline.py)"
         required: true
         default: train_baseline.py
+      arguman:
+        description: "Betiğe verilecek argümanlar (ör. ytu-ce-cosmos/turkish-mini-bert-uncased mini)"
+        required: false
+        default: ""
 permissions:
   contents: write
 jobs:
@@ -27,7 +31,7 @@ jobs:
           ek="training/requirements-${{ inputs.betik }}"; ek="${ek%.py}.txt"
           if [ -f "$ek" ]; then pip install -r "$ek"; fi
       - name: Eğit
-        run: python training/scripts/${{ inputs.betik }}
+        run: python training/scripts/${{ inputs.betik }} ${{ inputs.arguman }}
       - name: Testler
         run: python -m pytest -q training/tests
       - name: Sonuçları commit'le
@@ -36,7 +40,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add results extension/model
           git diff --cached --quiet && exit 0
-          git commit -m "chore: training results for ${{ inputs.betik }}"
+          git commit -m "chore: training results for ${{ inputs.betik }} ${{ inputs.arguman }}"
           # Eğitim sürerken dala başka commit gelmiş olabilir.
           for i in 1 2 3; do git pull --rebase && git push && exit 0; sleep 5; done
           exit 1
