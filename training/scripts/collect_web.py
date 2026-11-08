@@ -4,7 +4,8 @@ Eklentinin göreceği şeyi taklit eder: sayfadaki p/li/h1-h3/span/div
 öğelerinden 5-200 karakterlik metinler. robots.txt'e uyar, site başına
 saniyede en fazla bir istek atar, yalnızca birkaç sayfa okur.
 
-Kullanım: python training/scripts/collect_web.py ci-out/web_bloklari.jsonl
+Kullanım: python training/scripts/collect_web.py ci-out/web_bloklari.jsonl [--odak]
+(--odak: yalnızca sözlük/forum/şikâyet sitelerinde konu sayfalarına girer)
 """
 
 from __future__ import annotations
@@ -36,6 +37,12 @@ BASLANGIC = {
     "ansiklopedi": ["https://tr.wikipedia.org/wiki/%C3%96zel:Rastgele"],
 }
 SAYFA_SITE_BASI = 12
+# İkinci tur: yorum/entry sayfalarına odaklan (adres kalıbı, sayfa sayısı).
+ODAK = {
+    "eksisozluk.com": (r"--\d+", 45),
+    "forum.donanimhaber.com": (r"--\d{5,}", 45),
+    "www.sikayetvar.com": (r"/[a-z0-9-]+/[a-z0-9-]{25,}$", 30),
+}
 ETIKETLER = ["p", "li", "h1", "h2", "h3", "span", "div", "a", "td"]
 BLOK_ICI = {"p", "div", "li", "ul", "ol", "table", "section", "article"}
 
@@ -76,8 +83,11 @@ def main(cikti_yolu: str) -> None:
             for baslangic in siteler:
                 alan = urlparse(baslangic).netloc
                 rp = robot(f"https://{alan}")
+                kalip, sinir = ODAK.get(alan, (None, SAYFA_SITE_BASI)) if ODAK_MODU else (None, SAYFA_SITE_BASI)
+                if ODAK_MODU and alan not in ODAK:
+                    continue
                 kuyruk, okunan, sayac = [baslangic], set(), 0
-                while kuyruk and len(okunan) < SAYFA_SITE_BASI:
+                while kuyruk and len(okunan) < sinir:
                     url = kuyruk.pop(0)
                     if url in okunan or not rp.can_fetch(AJAN, url):
                         continue
@@ -101,10 +111,16 @@ def main(cikti_yolu: str) -> None:
                     linkler = [urljoin(url, a["href"]).split("#")[0] for a in corba.find_all("a", href=True)]
                     linkler = [u for u in linkler if urlparse(u).netloc == alan and u not in okunan]
                     rnd.shuffle(linkler)
+                    if kalip:
+                        # Konu/entry sayfalarını öne al.
+                        linkler.sort(key=lambda u: not re.search(kalip, urlparse(u).path))
+                        kuyruk = [u for u in kuyruk if re.search(kalip, urlparse(u).path)] + [u for u in kuyruk if not re.search(kalip, urlparse(u).path)]
                     kuyruk.extend(linkler[:40])
                 print(alan, "sayfa", len(okunan), "blok", sayac, "durum", durum.get(alan, [])[:6], flush=True)
     json.dump(durum, open(cikti_yolu + ".durum.json", "w"), indent=1)
 
+
+ODAK_MODU = "--odak" in sys.argv
 
 if __name__ == "__main__":
     main(sys.argv[1])
