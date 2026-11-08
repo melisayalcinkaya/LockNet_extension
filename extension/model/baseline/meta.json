@@ -1,0 +1,17 @@
+{
+  "tur": "hash-tfidf-lr",
+  "surum": 1,
+  "kutu_sayisi": 524288,
+  "karakter_ngram": [
+    2,
+    5
+  ],
+  "kelime_ngram": [
+    1,
+    2
+  ],
+  "sabit": -3.12672758102417,
+  "esik": 0.34,
+  "esik_temkinli": 0.51,
+  "agirliklar": "weights.bin: float16 idf[kutu_sayisi] + float16 katsayi[kutu_sayisi], little-endian"
+}
