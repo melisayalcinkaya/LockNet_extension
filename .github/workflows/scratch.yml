@@ -6,35 +6,16 @@ on:
 permissions:
   contents: write
 jobs:
-  fetch:
+  topla:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with: { ref: main, path: kod }
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - run: pip install -q huggingface_hub pandas pyarrow
-      - name: OffensEval TR indir
-        run: |
-          mkdir -p ci-out/offenseval
-          python - <<'PY'
-          from huggingface_hub import list_repo_files, hf_hub_download
-          import shutil, json
-          out = {}
-          for rev in ["main", "refs/convert/parquet"]:
-              try:
-                  files = list_repo_files("coltekin/offenseval2020_tr", repo_type="dataset", revision=rev)
-                  out[rev] = files
-                  for f in files:
-                      if f.endswith((".tsv", ".csv", ".parquet", ".txt", ".gz", ".zip", ".md", ".py")):
-                          p = hf_hub_download("coltekin/offenseval2020_tr", f, repo_type="dataset", revision=rev)
-                          shutil.copy(p, "ci-out/offenseval/" + rev.replace("/", "_") + "__" + f.replace("/", "__"))
-              except Exception as e:
-                  out[rev + "_error"] = repr(e)
-          json.dump(out, open("ci-out/summary.json", "w"), indent=2)
-          print(out)
-          PY
-          ls -la ci-out/offenseval
-      - name: Sonucu dala yaz
-        run: |
+      - run: pip install -q requests beautifulsoup4
+      - run: mkdir -p ci-out && python kod/training/scripts/collect_web.py ci-out/web_bloklari.jsonl
+      - run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add ci-out && git commit -m "ci: offenseval fetch output" && git push
+          git add ci-out && git commit -m "ci: web blocks" && git push
