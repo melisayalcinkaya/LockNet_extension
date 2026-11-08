@@ -264,24 +264,25 @@
     }
   ],
   "zor_ornek_dogruluk": 0.933,
-  "int8_ms_cumle_parti64": 1.098,
   "int8_test": {
-    "esik": 0.56,
-    "macro_f1": 0.7848,
-    "f1_saldirgan": 0.6518,
-    "precision": 0.6957,
-    "recall": 0.6131,
-    "yanlis_alarm": 0.0683,
-    "roc_auc": 0.8931
+    "esik": 0.53,
+    "macro_f1": 0.7868,
+    "f1_saldirgan": 0.6565,
+    "precision": 0.687,
+    "recall": 0.6285,
+    "yanlis_alarm": 0.0729,
+    "roc_auc": 0.8925
   },
   "int8_test_temkinli_esik": {
     "esik": 0.82,
-    "macro_f1": 0.7616,
-    "f1_saldirgan": 0.5984,
-    "precision": 0.8388,
-    "recall": 0.4651,
-    "yanlis_alarm": 0.0228,
-    "roc_auc": 0.8931
+    "macro_f1": 0.7634,
+    "f1_saldirgan": 0.6014,
+    "precision": 0.8417,
+    "recall": 0.4679,
+    "yanlis_alarm": 0.0224,
+    "roc_auc": 0.8925
   },
-  "int8_boyut_mb": 11.2
+  "int8_boyut_mb": 11.2,
+  "int8_ms_cumle_tekli": 1.168,
+  "int8_not": "int8 skorları tek cümle, dolgusuz hesaplandı (tarayıcıdaki gibi); bkz. training/locknet/onnx_skor.py"
 }

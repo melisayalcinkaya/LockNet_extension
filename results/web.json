@@ -1,0 +1,96 @@
+{
+  "aciklama": "Türkçe sitelerden toplanan metin blokları; Melisa etiketledi. Yanlış alarm (rastgele) yalnızca rastgele seçilen bloklarda ölçülür.",
+  "cumle": 478,
+  "saldirgan": 40,
+  "rastgele_cumle": 313,
+  "modeller": {
+    "baseline": {
+      "esik": {
+        "esik": 0.62,
+        "macro_f1": 0.769,
+        "f1_saldirgan": 0.5859,
+        "precision": 0.4915,
+        "recall": 0.725,
+        "yanlis_alarm": 0.0685,
+        "roc_auc": 0.9123,
+        "yanlis_alarm_rastgele": 0.013
+      },
+      "temkinli": {
+        "esik": 0.78,
+        "macro_f1": 0.7606,
+        "f1_saldirgan": 0.5538,
+        "precision": 0.72,
+        "recall": 0.45,
+        "yanlis_alarm": 0.016,
+        "roc_auc": 0.9123,
+        "yanlis_alarm_rastgele": 0.0
+      }
+    },
+    "bert-mini": {
+      "esik": {
+        "esik": 0.53,
+        "macro_f1": 0.804,
+        "f1_saldirgan": 0.6437,
+        "precision": 0.5957,
+        "recall": 0.7,
+        "yanlis_alarm": 0.0434,
+        "roc_auc": 0.9489,
+        "yanlis_alarm_rastgele": 0.0292
+      },
+      "temkinli": {
+        "esik": 0.82,
+        "macro_f1": 0.815,
+        "f1_saldirgan": 0.6571,
+        "precision": 0.7667,
+        "recall": 0.575,
+        "yanlis_alarm": 0.016,
+        "roc_auc": 0.9489,
+        "yanlis_alarm_rastgele": 0.0065
+      }
+    },
+    "bert-small": {
+      "esik": {
+        "esik": 0.24,
+        "macro_f1": 0.784,
+        "f1_saldirgan": 0.6122,
+        "precision": 0.5172,
+        "recall": 0.75,
+        "yanlis_alarm": 0.0639,
+        "roc_auc": 0.9256,
+        "yanlis_alarm_rastgele": 0.0292
+      },
+      "temkinli": {
+        "esik": 0.69,
+        "macro_f1": 0.8098,
+        "f1_saldirgan": 0.6479,
+        "precision": 0.7419,
+        "recall": 0.575,
+        "yanlis_alarm": 0.0183,
+        "roc_auc": 0.9256,
+        "yanlis_alarm_rastgele": 0.0
+      }
+    },
+    "bert-tiny": {
+      "esik": {
+        "esik": 0.66,
+        "macro_f1": 0.7823,
+        "f1_saldirgan": 0.6024,
+        "precision": 0.5814,
+        "recall": 0.625,
+        "yanlis_alarm": 0.0411,
+        "roc_auc": 0.9316,
+        "yanlis_alarm_rastgele": 0.0195
+      },
+      "temkinli": {
+        "esik": 0.85,
+        "macro_f1": 0.7721,
+        "f1_saldirgan": 0.5758,
+        "precision": 0.7308,
+        "recall": 0.475,
+        "yanlis_alarm": 0.016,
+        "roc_auc": 0.9316,
+        "yanlis_alarm_rastgele": 0.0097
+      }
+    }
+  }
+}

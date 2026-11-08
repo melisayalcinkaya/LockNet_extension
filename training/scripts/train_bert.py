@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -157,28 +158,41 @@ def main() -> None:
     )
     from onnxruntime.quantization import QuantType, quantize_dynamic
 
-    quantize_dynamic(str(gecici / "model_fp32.onnx"), str(gecici / "model.onnx"), weight_type=QuantType.QInt8)
+    from locknet.onnx_skor import OnnxBert
 
-    # int8 modeli de ölç: tarayıcıya giden dosya bu.
-    import onnxruntime as ort
+    # int8 dönüşümü kalite kaybettirebilir (x86'da QInt8 ağırlık + UInt8 etkinleşme
+    # çarpımı doyabiliyor). Birkaç ayarı doğrulama setinde dener, en iyisini seçeriz;
+    # test seti yalnızca seçilen ayarla, bir kez ölçülür. Skorlar tek cümle, dolgusuz
+    # (dinamik nicemlemede skor partideki komşulara bağlı; bkz. locknet/onnx_skor.py).
+    tok.save_pretrained(str(gecici / "tok"))
+    shutil.copy(gecici / "tok" / "tokenizer.json", gecici / "tokenizer.json")
+    (gecici / "meta.json").write_text(json.dumps({"maks_uzunluk": MAKS_UZUNLUK}))
+    ayarlar = {
+        "qint8": dict(weight_type=QuantType.QInt8),
+        "qint8_kanal": dict(weight_type=QuantType.QInt8, per_channel=True),
+        "qint8_kanal_dar": dict(weight_type=QuantType.QInt8, per_channel=True, reduce_range=True),
+        "quint8_kanal": dict(weight_type=QuantType.QUInt8, per_channel=True),
+    }
+    deneme = {}
+    for ad, ayar in ayarlar.items():
+        quantize_dynamic(str(gecici / "model_fp32.onnx"), str(gecici / f"q_{ad}.onnx"), **ayar)
+        shutil.copy(gecici / f"q_{ad}.onnx", gecici / "model.onnx")
+        s = OnnxBert(gecici).skorla(list(dogrulama.metin))
+        e = metrics.esik_sec(dogrulama.etiket, s)
+        deneme[ad] = metrics.olc(dogrulama.etiket, s, e)
+        print("nicemleme", ad, deneme[ad], flush=True)
+    secilen = max(deneme, key=lambda a: deneme[a]["macro_f1"])
+    shutil.copy(gecici / f"q_{secilen}.onnx", gecici / "model.onnx")
+    sonuc["nicemleme_denemeleri_dogrulama"] = deneme
+    sonuc["nicemleme_secilen"] = secilen
 
-    oturum = ort.InferenceSession(str(gecici / "model.onnx"))
-
-    def onnx_skor(metinler):
-        skor = []
-        for i in range(0, len(metinler), 64):
-            k = tok([on_isle(t) for t in metinler[i : i + 64]], truncation=True, max_length=MAKS_UZUNLUK, padding=True, return_tensors="np")
-            lg = oturum.run(None, {"input_ids": k["input_ids"].astype(np.int64), "attention_mask": k["attention_mask"].astype(np.int64)})[0]
-            e = np.exp(lg - lg.max(1, keepdims=True))
-            skor.append(e[:, 1] / e.sum(1))
-        return np.concatenate(skor)
-
-    s_dog8 = onnx_skor(list(dogrulama.metin))
+    onnx8 = OnnxBert(gecici)
+    s_dog8 = onnx8.skorla(list(dogrulama.metin))
     esik8 = metrics.esik_sec(dogrulama.etiket, s_dog8)
     esik8_t = metrics.esik_sec(dogrulama.etiket, s_dog8, en_fazla_yanlis_alarm=0.02)
     t0 = time.perf_counter()
-    s_test8 = onnx_skor(list(test.metin))
-    sonuc["int8_ms_cumle_parti64"] = round((time.perf_counter() - t0) * 1000 / len(test), 3)
+    s_test8 = onnx8.skorla(list(test.metin))
+    sonuc["int8_ms_cumle_tekli"] = round((time.perf_counter() - t0) * 1000 / len(test), 3)
     sonuc["int8_test"] = metrics.olc(test.etiket, s_test8, esik8)
     sonuc["int8_test_temkinli_esik"] = metrics.olc(test.etiket, s_test8, esik8_t)
     boyut = (gecici / "model.onnx").stat().st_size
@@ -186,7 +200,6 @@ def main() -> None:
 
     if boyut < 95 * 2**20:
         (hedef / "model.onnx").write_bytes((gecici / "model.onnx").read_bytes())
-        tok.save_pretrained(str(gecici / "tok"))
         (hedef / "tokenizer.json").write_bytes((gecici / "tok" / "tokenizer.json").read_bytes())
         meta = {
             "tur": "bert-onnx-int8",
@@ -194,6 +207,8 @@ def main() -> None:
             "maks_uzunluk": MAKS_UZUNLUK,
             "esik": esik8,
             "esik_temkinli": esik8_t,
+            "parti": 1,
+            "nicemleme": secilen,
             "girdiler": ["input_ids", "attention_mask"],
             "cikti": "logits[:, 1] softmax",
         }
@@ -203,7 +218,7 @@ def main() -> None:
 
     (KOK / "results").mkdir(exist_ok=True)
     (KOK / "results" / f"bert-{kisa}.json").write_text(json.dumps(sonuc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(json.dumps({k: sonuc[k] for k in ("parametre", "test", "int8_test", "int8_boyut_mb", "int8_ms_cumle_parti64")}, indent=2))
+    print(json.dumps({k: sonuc[k] for k in ("parametre", "test", "int8_test", "int8_boyut_mb", "int8_ms_cumle_tekli", "nicemleme_secilen")}, indent=2))
 
 
 if __name__ == "__main__":
