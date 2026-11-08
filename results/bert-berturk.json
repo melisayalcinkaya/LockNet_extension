@@ -1,0 +1,264 @@
+{
+  "model": "dbmdz/bert-base-turkish-uncased",
+  "parametre": 110618882,
+  "epok": 2,
+  "ogrenme_orani": 3e-05,
+  "gecmis": [
+    {
+      "epok": 1,
+      "egitim_kaybi": 0.3978,
+      "sure_dk": 124.1,
+      "esik": 0.47,
+      "macro_f1": 0.8319,
+      "f1_saldirgan": 0.7273,
+      "precision": 0.744,
+      "recall": 0.7113,
+      "yanlis_alarm": 0.0585,
+      "roc_auc": 0.9212
+    },
+    {
+      "epok": 2,
+      "egitim_kaybi": 0.2413,
+      "sure_dk": 125.2,
+      "esik": 0.61,
+      "macro_f1": 0.8304,
+      "f1_saldirgan": 0.7247,
+      "precision": 0.744,
+      "recall": 0.7064,
+      "yanlis_alarm": 0.0581,
+      "roc_auc": 0.9233
+    }
+  ],
+  "dogrulama": {
+    "esik": 0.47,
+    "macro_f1": 0.8319,
+    "f1_saldirgan": 0.7273,
+    "precision": 0.744,
+    "recall": 0.7113,
+    "yanlis_alarm": 0.0585,
+    "roc_auc": 0.9212
+  },
+  "test": {
+    "esik": 0.47,
+    "macro_f1": 0.8206,
+    "f1_saldirgan": 0.7127,
+    "precision": 0.7261,
+    "recall": 0.6997,
+    "yanlis_alarm": 0.0672,
+    "roc_auc": 0.929
+  },
+  "test_temkinli_esik": {
+    "esik": 0.8,
+    "macro_f1": 0.7975,
+    "f1_saldirgan": 0.6609,
+    "precision": 0.8794,
+    "recall": 0.5293,
+    "yanlis_alarm": 0.0185,
+    "roc_auc": 0.929
+  },
+  "python_ms_cumle_parti128": 69.98,
+  "zor_ornekler": [
+    {
+      "metin": "bu eklenti gerçekten harika çalışıyor ellerinize sağlık",
+      "etiket": 0,
+      "tur": "temiz",
+      "skor": 0.027
+    },
+    {
+      "metin": "seni öldüreceğim gerizekalı",
+      "etiket": 1,
+      "tur": "tehdit",
+      "skor": 0.968
+    },
+    {
+      "metin": "bugün hava çok güzel maça gidelim mi",
+      "etiket": 0,
+      "tur": "temiz",
+      "skor": 0.008
+    },
+    {
+      "metin": "git buradan aptal",
+      "etiket": 1,
+      "tur": "hakaret",
+      "skor": 0.872
+    },
+    {
+      "metin": "teşekkür ederim çok işime yaradı",
+      "etiket": 0,
+      "tur": "temiz",
+      "skor": 0.018
+    },
+    {
+      "metin": "g3rizekalisin sen",
+      "etiket": 1,
+      "tur": "leet",
+      "skor": 0.978
+    },
+    {
+      "metin": "a p t a l herif",
+      "etiket": 1,
+      "tur": "boşluklu",
+      "skor": 0.891
+    },
+    {
+      "metin": "senin gibisine ne denir ki",
+      "etiket": 1,
+      "tur": "örtük",
+      "skor": 0.316
+    },
+    {
+      "metin": "çok teşekkürler harika bir gündü",
+      "etiket": 0,
+      "tur": "temiz",
+      "skor": 0.007
+    },
+    {
+      "metin": "defol git buradan seni salak",
+      "etiket": 1,
+      "tur": "hakaret",
+      "skor": 0.988
+    },
+    {
+      "metin": "ge r i z e k a l i",
+      "etiket": 1,
+      "tur": "boşluklu",
+      "skor": 0.085
+    },
+    {
+      "metin": "4pt4l m1s1n nes1n",
+      "etiket": 1,
+      "tur": "leet",
+      "skor": 0.775
+    },
+    {
+      "metin": "Bu Haberi Okuyunca Çok Şaşırdım",
+      "etiket": 0,
+      "tur": "büyük harf",
+      "skor": 0.013
+    },
+    {
+      "metin": "SALAK MISIN SEN",
+      "etiket": 1,
+      "tur": "büyük harf",
+      "skor": 0.981
+    },
+    {
+      "metin": "İstanbul'da yarın kuvvetli yağmur bekleniyor",
+      "etiket": 0,
+      "tur": "haber",
+      "skor": 0.008
+    },
+    {
+      "metin": "Maç bitti, Galatasaray deplasmanda 2-1 kazandı",
+      "etiket": 0,
+      "tur": "haber",
+      "skor": 0.021
+    },
+    {
+      "metin": "Merkez Bankası faiz kararını açıkladı",
+      "etiket": 0,
+      "tur": "haber",
+      "skor": 0.024
+    },
+    {
+      "metin": "Kürt vatandaşlarımızla birlikte yaşıyoruz",
+      "etiket": 0,
+      "tur": "kimlik (temiz)",
+      "skor": 0.047
+    },
+    {
+      "metin": "göçmenler hakkında bir haber okudum",
+      "etiket": 0,
+      "tur": "kimlik (temiz)",
+      "skor": 0.022
+    },
+    {
+      "metin": "Suriyeliler defolup gitsin bu ülkeden",
+      "etiket": 1,
+      "tur": "kimlik (saldırgan)",
+      "skor": 0.681
+    },
+    {
+      "metin": "Sepete ekle · Ücretsiz kargo · 3 taksit imkanı",
+      "etiket": 0,
+      "tur": "web arayüzü",
+      "skor": 0.021
+    },
+    {
+      "metin": "Yorum yap Paylaş Beğen 12 yanıt",
+      "etiket": 0,
+      "tur": "web arayüzü",
+      "skor": 0.027
+    },
+    {
+      "metin": "Bu filmin sonu berbattı, senaryo yazarı işini bilmiyor",
+      "etiket": 0,
+      "tur": "sert eleştiri",
+      "skor": 0.128
+    },
+    {
+      "metin": "Ürün kırık geldi, satıcı hiç ilgilenmedi, rezalet",
+      "etiket": 0,
+      "tur": "sert eleştiri",
+      "skor": 0.319
+    },
+    {
+      "metin": "s.ktir git lan",
+      "etiket": 1,
+      "tur": "noktalı",
+      "skor": 0.884
+    },
+    {
+      "metin": "amk ya yine otobüsü kaçırdım",
+      "etiket": 1,
+      "tur": "küfür (hedefsiz)",
+      "skor": 0.993
+    },
+    {
+      "metin": "Allah belanı versin",
+      "etiket": 1,
+      "tur": "beddua",
+      "skor": 0.989
+    },
+    {
+      "metin": "Tarifteki ölçüleri değiştirince kek çok daha güzel oldu",
+      "etiket": 0,
+      "tur": "temiz",
+      "skor": 0.016
+    },
+    {
+      "metin": "orospu çocukları hepiniz",
+      "etiket": 1,
+      "tur": "küfür",
+      "skor": 0.993
+    },
+    {
+      "metin": "Bu konuda size katılmıyorum ama saygı duyuyorum",
+      "etiket": 0,
+      "tur": "temiz",
+      "skor": 0.08
+    }
+  ],
+  "zor_ornek_dogruluk": 0.933,
+  "int8_ms_cumle_parti64": 35.41,
+  "int8_test": {
+    "esik": 0.43,
+    "macro_f1": 0.8151,
+    "f1_saldirgan": 0.7037,
+    "precision": 0.718,
+    "recall": 0.6899,
+    "yanlis_alarm": 0.069,
+    "roc_auc": 0.9278
+  },
+  "int8_test_temkinli_esik": {
+    "esik": 0.78,
+    "macro_f1": 0.7986,
+    "f1_saldirgan": 0.6626,
+    "precision": 0.8817,
+    "recall": 0.5307,
+    "yanlis_alarm": 0.0181,
+    "roc_auc": 0.9278
+  },
+  "int8_boyut_mb": 106.2,
+  "not": "int8 model 95 MB'tan büyük; depoya konmadı."
+}
