@@ -9,8 +9,14 @@ const ACIKLAMA = {
 let sekme = null;
 let host = "";
 
-function durumYaz(aktif, guvenli, d) {
-  document.body.classList.toggle("disabled", !aktif);
+function durumYaz(aktif, guvenli, d, onay) {
+  document.body.classList.toggle("disabled", !aktif || !onay);
+  $("onayBtn").hidden = onay;
+  if (!onay) {
+    $("statusDot").className = "status-dot passive";
+    $("statusText").textContent = "Başlamak için izin ver";
+    return;
+  }
   $("statusDot").className = "status-dot" + (aktif && !guvenli ? "" : " passive");
   if (!aktif) $("statusText").textContent = "Devre dışı";
   else if (guvenli) $("statusText").textContent = "Bu site güven listesinde";
@@ -26,6 +32,7 @@ function wlButon(listede) {
 
 async function yenile() {
   const a = await chrome.storage.sync.get({ aktif: true, mod: "dengeli", whitelist: [] });
+  const { onay } = await chrome.storage.local.get({ onay: false });
   $("masterToggle").checked = a.aktif;
   $(a.mod === "temkinli" ? "modTemkinli" : "modDengeli").checked = true;
   $("modDesc").textContent = ACIKLAMA[a.mod] || ACIKLAMA.dengeli;
@@ -35,7 +42,7 @@ async function yenile() {
   if (sekme?.id != null) d = await chrome.tabs.sendMessage(sekme.id, { tur: "durum" }).catch(() => null);
   $("statTarama").textContent = d ? d.taranan : "—";
   $("statEngelendi").textContent = d ? d.gizlenen : "—";
-  durumYaz(a.aktif, guvenli, d);
+  durumYaz(a.aktif, guvenli, d, onay === true);
 }
 
 (async () => {
@@ -61,3 +68,5 @@ $("whitelistBtn").addEventListener("click", async () => {
   await chrome.storage.sync.set({ whitelist: yeni });
   yenile();
 });
+
+$("onayBtn").addEventListener("click", () => chrome.tabs.create({ url: "hosgeldin.html" }));

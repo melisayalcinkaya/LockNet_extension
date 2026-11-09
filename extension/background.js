@@ -23,3 +23,11 @@ chrome.runtime.onMessage.addListener((mesaj, _gonderen, yanit) => {
     .catch((h) => yanit({ hata: String(h?.message || h) }));
   return true;
 });
+
+// İlk kurulumda bilgilendirme ve onay sayfasını aç. Onay verilene kadar eklenti
+// hiçbir sayfadaki metni okumaz.
+chrome.runtime.onInstalled.addListener(async ({ reason }) => {
+  if (reason !== "install") return;
+  const { onay } = await chrome.storage.local.get({ onay: false });
+  if (!onay) chrome.tabs.create({ url: "hosgeldin.html" });
+});

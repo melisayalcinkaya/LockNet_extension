@@ -195,3 +195,9 @@ body.disabled .status-bar { opacity: 0.45; pointer-events: none; }
 .mode-row input:checked + label { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
 
 .privacy { padding: 10px 16px 14px; font-size: 11px; color: #888; line-height: 1.45; }
+
+.consent-btn {
+  display: block; width: calc(100% - 32px); margin: 10px 16px 0; padding: 8px 0;
+  border: none; border-radius: 999px; background: #1a1a1a; color: #fff; font: inherit; font-weight: 600; cursor: pointer;
+}
+.consent-btn[hidden] { display: none; }

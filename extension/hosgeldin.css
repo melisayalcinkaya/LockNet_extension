@@ -1,0 +1,17 @@
+:root { color-scheme: light dark; --zemin: #f5f5f5; --kart: #fff; --yazi: #1a1a1a; --soluk: #666; --cizgi: #e5e5e5; }
+@media (prefers-color-scheme: dark) { :root { --zemin: #161616; --kart: #222; --yazi: #eee; --soluk: #aaa; --cizgi: #333; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--zemin); color: var(--yazi); font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 620px; margin: 40px auto; padding: 32px 28px; background: var(--kart); border: 1px solid var(--cizgi); border-radius: 16px; }
+img { border-radius: 14px; }
+h1 { font-size: 26px; margin: 16px 0 4px; }
+h2 { font-size: 15px; margin: 22px 0 4px; }
+p { margin: 0 0 8px; }
+.giris { color: var(--soluk); }
+.kucuk { font-size: 13px; color: var(--soluk); margin-top: 20px; }
+a { color: inherit; }
+.dugmeler { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+button { font: inherit; font-weight: 600; padding: 10px 18px; border-radius: 999px; border: 1px solid #1a1a1a; background: #1a1a1a; color: #fff; cursor: pointer; }
+button.ikincil { background: transparent; color: var(--yazi); border-color: var(--cizgi); }
+.durum { margin-top: 14px; font-weight: 600; min-height: 1.6em; }
+@media (max-width: 560px) { main { margin: 16px; padding: 24px 18px; } }

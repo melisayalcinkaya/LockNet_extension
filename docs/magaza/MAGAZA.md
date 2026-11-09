@@ -36,6 +36,13 @@ Açık kaynak: https://github.com/melisayalcinkaya/LockNet_extension
 - Küçük tanıtım kutucuğu (440×280): `tanitim_440x280.png`
 - Simge (128×128): `extension/icons/128.png`
 
+## Hesap açarken
+
+- **2 Adımlı Doğrulama:** Yayınlamadan önce Google hesabında 2 Adımlı Doğrulama açık olmalı (zorunlu).
+- **İletişim e-postası:** Mağaza sayfasında herkese görünür. Yalnızca `melisa.yky2001@gmail.com` kullanılmalı ve doğrulanmalı. Mağazadan gelen e-postalara yanıt verilmezse öğe kaldırılabilir.
+- **Tacir (trader) beyanı:** Ücretsiz ve ticari olmayan bir kişisel proje olduğu için "tacir değilim" seçilir. Tacir olunursa adres ve telefon herkese açık gösterilir.
+- **Yayıncı adı:** Melisa Yalçınkaya.
+
 ## Gizlilik sekmesi
 
 **Tek amaç (single purpose):**
@@ -49,7 +56,12 @@ Web sayfalarındaki Türkçe saldırgan metinleri cihaz üzerinde çalışan bir
 
 **Uzak kod:** Hayır. Tüm JavaScript ve WebAssembly dosyaları paketin içindedir.
 
-**Veri kullanımı:** Hiçbir kullanıcı verisi toplanmaz veya aktarılmaz. "Web sitesi içeriği" yalnızca cihazda işlenir ve hiçbir yere gönderilmez; bu nedenle veri toplama kutucuklarının hiçbiri işaretlenmez. Üç beyan da onaylanır (satılmaz, amaç dışı kullanılmaz, kredi değerlendirmesi için kullanılmaz).
+**Veri kullanımı (Gizlilik uygulamaları sekmesi):** Chrome Web Store, yalnızca cihazda işlenen veriyi de beyan etmeyi istiyor (Kullanıcı verileri SSS'si, 3. soru).
+- İşaretlenecek tek kutu: **Web sitesi içeriği** ("Metin, resimler, sesler, videolar veya köprüler").
+- Diğer bütün kutular boş kalır: kişisel bilgiler, sağlık, finans, kimlik doğrulama, kişisel iletişim, konum, web geçmişi, kullanıcı etkinliği.
+- Üç beyanın üçü de onaylanır: veri satılmaz; tek amaç dışında kullanılmaz; kredi değerlendirmesi için kullanılmaz.
+- Gizlilik politikasında Sınırlı Kullanım beyanı var (PRIVACY.md).
+- Kurulumda açık bildirim ve onay sayfası (`hosgeldin.html`) var. Onay verilmeden eklenti hiçbir metni okumaz.
 
 **Gizlilik politikası URL'si:**
 https://github.com/melisayalcinkaya/LockNet_extension/blob/main/PRIVACY.md

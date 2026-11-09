@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="tr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LockNet — Başlamadan önce</title>
+<link rel="stylesheet" href="hosgeldin.css">
+<main>
+  <img src="icons/128.png" width="64" height="64" alt="">
+  <h1>LockNet'e hoş geldin</h1>
+  <p class="giris">Başlamadan önce eklentinin hangi veriyi nasıl kullandığını bilmeni istiyoruz.</p>
+
+  <h2>Ne okunur?</h2>
+  <p>LockNet, açtığın web sayfalarındaki <b>görünür metinleri</b> okur. Her metin, eklentinin içindeki yapay zekâ modeliyle <b>senin bilgisayarında</b> değerlendirilir; saldırgan bulunanlar bulanıklaştırılır.</p>
+
+  <h2>Nereye gider?</h2>
+  <p><b>Hiçbir yere.</b> Metinler hiçbir sunucuya gönderilmez, kaydedilmez, saklanmaz. Eklenti, kendi dosyaları dışında hiçbir adrese bağlanmaz. Analitik ya da reklam yoktur.</p>
+
+  <h2>Ne saklanır?</h2>
+  <p>Yalnızca ayarların: açık/kapalı durumu, hassasiyet modu ve güven listesine eklediğin site adları. Chrome senkronizasyonu açıksa bunlar kendi cihazların arasında eşitlenir.</p>
+
+  <p class="kucuk">Ayrıntılar: <a href="https://github.com/melisayalcinkaya/LockNet_extension/blob/main/PRIVACY.md" target="_blank" rel="noopener">Gizlilik politikası</a>. Eklentiyi istediğin an açılır pencereden kapatabilir ya da kaldırabilirsin.</p>
+
+  <div class="dugmeler">
+    <button id="kabul">Kabul ediyorum, başlat</button>
+    <button id="ret" class="ikincil">Kabul etmiyorum</button>
+  </div>
+  <p id="durum" class="durum" role="status"></p>
+</main>
+<script src="hosgeldin.js"></script>
+</html>

@@ -26,16 +26,21 @@
   let zamanlayici = null;
 
   // ── Ayarlar ─────────────────────────────────────────────────────
+  // onay: kullanıcı kurulumdaki bilgilendirme sayfasında "Kabul ediyorum" demeden
+  // hiçbir sayfa metni okunmaz (Chrome Web Store açık bildirim ve onay kuralı).
+  let onay = false;
   const siteGuvenli = () => ayarlar.whitelist.includes(location.hostname);
-  const calismali = () => ayarlar.aktif && !siteGuvenli();
+  const calismali = () => onay && ayarlar.aktif && !siteGuvenli();
 
-  chrome.storage.sync.get(ayarlar, (d) => {
+  Promise.all([chrome.storage.sync.get(ayarlar), chrome.storage.local.get({ onay: false })]).then(([d, l]) => {
     ayarlar = d;
+    onay = l.onay === true;
     if (calismali()) baslat();
   });
 
   chrome.storage.onChanged.addListener((d, alan) => {
-    if (alan !== "sync") return;
+    if (alan === "local" && "onay" in d) onay = d.onay.newValue === true;
+    else if (alan !== "sync") return;
     for (const k of Object.keys(d)) if (k in ayarlar) ayarlar[k] = d[k].newValue;
     if (calismali()) {
       baslat();
