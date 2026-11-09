@@ -9,7 +9,7 @@ Geliştirici panelinde (https://chrome.google.com/webstore/devconsole) doldurula
 **Özet (en fazla 132 karakter):**
 Türkçe saldırgan ve küfürlü metinleri sayfada bulanıklaştırır. Model tarayıcında çalışır; metinler cihazından çıkmaz.
 
-**Kategori:** Erişilebilirlik (alternatif: Araçlar)
+**Kategori:** Yaşam Tarzı → Esenlik (Well-being); alternatif: Chrome'u Kişiselleştirin → Erişilebilirlik
 
 **Dil:** Türkçe
 
